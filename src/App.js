@@ -4,15 +4,16 @@ import {useState} from 'react'
 import './index.css';
 
 function App() {
-  let [gridWidth, setGridWidth] = useState(15);
-  let [gridHeight, setGridHeight] = useState(20);
-  let [timer,setTimer] = useState(100);
+  let [gridWidth, setGridWidth] = useState(17);
+  let [gridHeight, setGridHeight] = useState(22);
+  let [timer,setTimer] = useState(30);
+  let [gridTiles,setGridTiles] = useState(5);
 
   return (
     <div>
       <div>
         <header>header todo?</header>
-        <Stacker gridWidth={gridWidth} gridHeight={gridHeight} timer={timer}/>
+        <Stacker gridWidth={gridWidth} gridHeight={gridHeight} timer={timer} gridTiles={gridTiles} setGridTiles={setGridTiles}/>
       </div>
     </div>
   );

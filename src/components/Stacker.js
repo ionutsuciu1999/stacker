@@ -10,6 +10,7 @@ const Stacker = (props) => {
     let [gameRunning,setGameRunning] = useState(1);
     let currentRow = 0;
     let lightsGrid = [];
+    let gridTiles = props.gridTiles;
 
     //todo use lights not lightsGrid
 
@@ -32,13 +33,26 @@ const Stacker = (props) => {
 
     //todo problem because you could press psacebar while onlt 4/5 squares are rendered
     const gameNextRow = () => {
-        console.log("SQUAREEE");
+        console.log("next row");
+
+        //cancello le tiles che sforano
+        //se sono alla prima riga non ha senso controllare
+        if(currentRow>0){
+            for(let i = 0; i < props.gridWidth; i++){
+                if(lightsGrid[currentRow][i]==1 && lightsGrid[currentRow-1][i]==0){
+                    //diminuisco il nr di luci alla prossima riga, e cancello quello che sforano
+                    lightsGrid[currentRow][i] = 0;
+                    gridTiles--;
+                    //se sono a 0 tiles, ho perso
+                    
+                }
+            }
+        }
         currentRow++;
-        lightsGrid[currentRow][props.gridWidth-1] = 1;
-        lightsGrid[currentRow][props.gridWidth-2] = 1;
-        lightsGrid[currentRow][props.gridWidth-3] = 1;
-        lightsGrid[currentRow][props.gridWidth-4] = 1;
-        lightsGrid[currentRow][props.gridWidth-5] = 1;
+        //starts the first x tiles
+        for(let i = 0; i < gridTiles; i++){
+            lightsGrid[currentRow][props.gridWidth-i-2] = 1;
+        }
     }
 
     
@@ -52,12 +66,11 @@ const Stacker = (props) => {
             }
         });
 
+        //starts the first x tiles
+        for(let i = 0; i < gridTiles; i++){
+            lightsGrid[currentRow][props.gridWidth-i-2] = 1;
+        }
 
-        lightsGrid[currentRow][props.gridWidth-1] = 1;
-        lightsGrid[currentRow][props.gridWidth-2] = 1;
-        lightsGrid[currentRow][props.gridWidth-3] = 1;
-        lightsGrid[currentRow][props.gridWidth-4] = 1;
-        lightsGrid[currentRow][props.gridWidth-5] = 1;
         setLight(lightsGrid);
         console.log(lightsGrid);
         renderGame();
@@ -83,7 +96,7 @@ const Stacker = (props) => {
     let direction = "left";
     const moveLights = () => {
         if(direction=="left"){
-            console.log("LEFT");
+            //console.log("LEFT");
             for(let i = 0; i < props.gridWidth; i++){
                 //scorro finche non trovo il primo rosso e coloro quella precedente di rosso
                 if(lightsGrid[currentRow][i+1]==1 && lightsGrid[currentRow][i]==0){
@@ -99,7 +112,7 @@ const Stacker = (props) => {
         
 
         if(direction=="right"){
-            console.log("RIGHT");
+            //console.log("RIGHT");
             for(let i = props.gridWidth-1; i >= 0; i--){
                 //scorro finche non trovo il primo rosso e coloro quella precedente di rosso
                 if(lightsGrid[currentRow][i-1]==1 && lightsGrid[currentRow][i]==0){
@@ -127,7 +140,6 @@ const Stacker = (props) => {
     //game loop
     const renderGame = () => {
         let t = setTimeout(() => {
-            console.log("rerender");
             moveLights();
             arrayToLights();
             if(gameRunning==1){
@@ -141,6 +153,7 @@ const Stacker = (props) => {
       <div id="stackerContainer">
         <div id="stackerTitle">stackerTitle</div>
         <div id="stackerBodyContainer">
+            <div id="stackerBodyVideo"><img src="../noise.gif"/></div>
             <div id="stackerGridBody" style={{gridTemplateColumns: "repeat("+`${props.gridWidth}`+", 1fr)"}}>
             {gridRender()}
             </div>
