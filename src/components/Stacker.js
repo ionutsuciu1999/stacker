@@ -31,6 +31,12 @@ const Stacker = (props) => {
     };
 
 
+    const resetGame =() =>{
+        clearTimeout(props.timer);
+        gameRunning = 0;
+        console.log("reset");
+    }
+
     //todo problem because you could press psacebar while onlt 4/5 squares are rendered
     const gameNextRow = () => {
         console.log("next row");
@@ -44,7 +50,10 @@ const Stacker = (props) => {
                     lightsGrid[currentRow][i] = 0;
                     gridTiles--;
                     //se sono a 0 tiles, ho perso
-                    
+                    if(gridTiles<=0){
+                    console.log("LOST");
+                    resetGame();
+                    }
                 }
             }
         }
@@ -144,6 +153,7 @@ const Stacker = (props) => {
             arrayToLights();
             if(gameRunning==1){
                 renderGame();
+                console.log("render");
             }
         }, props.timer);
     }

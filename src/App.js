@@ -7,7 +7,7 @@ function App() {
   let [gridWidth, setGridWidth] = useState(17);
   let [gridHeight, setGridHeight] = useState(22);
   let [timer,setTimer] = useState(30);
-  let [gridTiles,setGridTiles] = useState(5);
+  let [gridTiles,setGridTiles] = useState(6);
 
   return (
     <div>
