@@ -35,6 +35,8 @@ const Stacker = (props) => {
         clearTimeout(props.timer);
         gameRunning = 0;
         console.log("reset");
+        //reset variables and restart
+        
     }
 
     //todo problem because you could press psacebar while onlt 4/5 squares are rendered
