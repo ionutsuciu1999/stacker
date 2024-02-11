@@ -16,9 +16,9 @@ function App() {
   return (
     <Router>
         <Routes>
-          <Route exact path='/' element={<Menu/>}/>
-          <Route exact path='/settings' element={<Settings setGridWidth={setGridWidth} setGridHeight={setGridHeight} setTimer={setTimer} setGridTiles={setGridTiles}/>}/>
-          <Route exact path='/play' element={<Stacker gridWidth={gridWidth} gridHeight={gridHeight} timer={timer} gridTiles={gridTiles} setGridTiles={setGridTiles}/> } />
+          <Route path='/' element={<Menu/>}/>
+          <Route path='/settings' element={<Settings setGridWidth={setGridWidth} setGridHeight={setGridHeight} setTimer={setTimer} setGridTiles={setGridTiles}/>}/>
+          <Route path='/play' element={<Stacker gridWidth={gridWidth} gridHeight={gridHeight} timer={timer} gridTiles={gridTiles} setGridTiles={setGridTiles}/> } />
         </Routes>
     </Router>
   );

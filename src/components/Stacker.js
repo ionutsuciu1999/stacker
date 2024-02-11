@@ -1,13 +1,14 @@
 import React from 'react';
 import {useState} from 'react'
 import {createContext} from 'react'
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate} from 'react-router-dom';
 import {useEffect} from 'react';
 import '../index.css';
 
 
 const Stacker = (props) => {
     console.log("STARTTTTT");
+    const navigate = useNavigate()
     const location = useLocation();
     let [lights,setLight] = useState();
     let gameRunning = 0;
@@ -119,13 +120,18 @@ const Stacker = (props) => {
     //when grid is finished loading start logic
     useEffect(() => {
         console.log('start lights');
-        document.addEventListener('keydown', spacebarHandler);
+        document.addEventListener('keydown', spacebarHandler,true);
 
         //starts the first x tiles
         
         initiateValues();
         
-        
+        //runs when component stacker gets unrendered
+        return () => {
+            console.log('cleanup');
+            resetGame();
+            document.removeEventListener('keydown',spacebarHandler,true);
+        };
     }, []);
 
     //sets the array of 0 and 1 to grid class on and off
@@ -203,10 +209,12 @@ const Stacker = (props) => {
         }, props.timer);
     }
 
+     
     return (
     <>
+    
         <li>
-            <Link to='/' onClick={()=>{resetGame(); document.removeEventListener('keydown', spacebarHandler, true); document.getElementById("stackerGridBody").innerHTML=""; }}>Back home</Link>
+            <button onClick={()=>{navigate('/')}}>Back home</button>
         </li>
         <div id="stackerContainer">
             <div id="stackerTitle">stackerTitle</div>
