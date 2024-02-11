@@ -1,13 +1,16 @@
 import React from 'react';
 import {useState} from 'react'
 import {createContext} from 'react'
+import { Link, useLocation } from 'react-router-dom';
 import {useEffect} from 'react';
 import '../index.css';
 
 
 const Stacker = (props) => {
+    console.log("STARTTTTT");
+    const location = useLocation();
     let [lights,setLight] = useState();
-    let [gameRunning,setGameRunning] = useState(1);
+    let gameRunning = 0;
     let currentRow = 0;
     let lightsGrid = [];
     let gridTiles = props.gridTiles;
@@ -33,7 +36,7 @@ const Stacker = (props) => {
 
     const resetGame =() =>{
         clearTimeout(props.timer);
-        gameRunning = 0;
+        gameRunning = -1;
         console.log("reset");
         //reset variables and restart
         
@@ -59,32 +62,70 @@ const Stacker = (props) => {
                 }
             }
         }
+        
         currentRow++;
-        //starts the first x tiles
-        for(let i = 0; i < gridTiles; i++){
-            lightsGrid[currentRow][props.gridWidth-i-2] = 1;
+        
+        //starts the first x tiles if didnt win yet
+        if(currentRow == props.gridHeight){
+            console.log("WIN");
+            resetGame();
+        }else{
+            for(let i = 0; i < gridTiles; i++){
+                lightsGrid[currentRow][props.gridWidth-i-2] = 1;
+            }
         }
     }
 
-    
-    //when grid is finished loading start logic
-    useEffect(() => {
-        console.log('start lights');
-        document.addEventListener('keydown', (e) => {
-            if(e.key == " "){
-                e.preventDefault();
-                gameNextRow();
+    //default values and start
+    const initiateValues = () =>{
+        gameRunning = 0;
+        currentRow = 0;
+        gridTiles = props.gridTiles;
+        for(let i = props.gridHeight-1; i>=0; i--){
+            for(let j = 0; j<props.gridWidth; j++){
+                lightsGrid[i][j] = 0;
             }
-        });
-
-        //starts the first x tiles
+        }
         for(let i = 0; i < gridTiles; i++){
             lightsGrid[currentRow][props.gridWidth-i-2] = 1;
         }
-
+        console.log("reset grid");
         setLight(lightsGrid);
-        console.log(lightsGrid);
-        renderGame();
+        moveLights();
+        arrayToLights();
+    }
+    
+    const spacebarHandler = (e) =>{
+        if(e.key == " "){
+            console.log("CLICKCKCKCKC");
+            //start game not running and press spacebar on first render to start
+            if(gameRunning==0){
+                gameRunning = 1;
+                renderGame();
+                //normal gameRow increase
+            }else if(gameRunning==1){
+                e.preventDefault();
+                gameNextRow();
+            //game lost reset
+            }else if(gameRunning==-1){
+                console.log("resetttttt");
+                initiateValues();
+                gameRunning = 1;
+                renderGame();
+            }
+        }
+    }
+
+    //when grid is finished loading start logic
+    useEffect(() => {
+        console.log('start lights');
+        document.addEventListener('keydown', spacebarHandler);
+
+        //starts the first x tiles
+        
+        initiateValues();
+        
+        
     }, []);
 
     //sets the array of 0 and 1 to grid class on and off
@@ -92,12 +133,14 @@ const Stacker = (props) => {
         for(let i = props.gridHeight-1; i>=0; i--){
             for(let j = 0; j<props.gridWidth; j++){
                 const div = document.querySelector('[data-width="'+j+'"][data-height="'+i+'"]');
-                if(lightsGrid[i][j]==1){
-                    div.classList.remove('off');
-                    div.classList.add('on');
-                }else{
-                    div.classList.remove('on');
-                    div.classList.add('off');
+                if(div){
+                    if(lightsGrid[i][j]==1){
+                        div.classList.remove('off');
+                        div.classList.add('on');
+                    }else{
+                        div.classList.remove('on');
+                        div.classList.add('off');
+                    }
                 }
             }
         }
@@ -151,9 +194,9 @@ const Stacker = (props) => {
     //game loop
     const renderGame = () => {
         let t = setTimeout(() => {
-            moveLights();
-            arrayToLights();
-            if(gameRunning==1){
+            if(gameRunning==1 && location.pathname=="/play"){
+                moveLights();
+                arrayToLights();
                 renderGame();
                 console.log("render");
             }
@@ -162,15 +205,18 @@ const Stacker = (props) => {
 
     return (
     <>
-      <div id="stackerContainer">
-        <div id="stackerTitle">stackerTitle</div>
-        <div id="stackerBodyContainer">
-            <div id="stackerBodyVideo"><img src="../noise.gif"/></div>
-            <div id="stackerGridBody" style={{gridTemplateColumns: "repeat("+`${props.gridWidth}`+", 1fr)"}}>
-            {gridRender()}
+        <li>
+            <Link to='/' onClick={()=>{resetGame(); document.removeEventListener('keydown', spacebarHandler, true); document.getElementById("stackerGridBody").innerHTML=""; }}>Back home</Link>
+        </li>
+        <div id="stackerContainer">
+            <div id="stackerTitle">stackerTitle</div>
+            <div id="stackerBodyContainer">
+                <div id="stackerBodyVideo"><img src="../noise.gif"/></div>
+                <div id="stackerGridBody" style={{gridTemplateColumns: "repeat("+`${props.gridWidth}`+", 1fr)"}}>
+                {gridRender()}
+                </div>
             </div>
         </div>
-      </div>
     </>
     );
 };

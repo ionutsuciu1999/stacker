@@ -11,7 +11,6 @@ body {
   position: relative;
   width: 80%;
   max-width: 440px;
-  border-radius: 7vw;
 }
 #stackerBodyVideo{
   position: absolute;
