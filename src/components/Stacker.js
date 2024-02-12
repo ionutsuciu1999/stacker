@@ -214,10 +214,14 @@ const Stacker = (props) => {
     <>
         <div id="stackerContainer" className="flex justify-center flex-col items-center ">
             <div id="stackerTitle">STACKER</div>
-            <div id="stackerBodyContainer" className='relative'>
-                <div id="stackerBodyVideo" className='w-full h-full	absolute'><img src="../noise.gif"/></div>
-                <div id="stackerGridBody" className='grid relativ' style={{gridTemplateColumns: "repeat("+`${props.gridWidth}`+", 1fr)"}}>
-                {gridRender()}
+            <div id="stackerBody">
+                <div id="stacker">
+                    <div id="stackerBodyContainer" className=''>
+                        <div id="stackerBodyVideo" className=''><img src="../noise.gif"/></div>
+                        <div id="stackerGridBody" className='grid relative' style={{gridTemplateColumns: "repeat("+`${props.gridWidth}`+", 1fr)"}}>
+                        {gridRender()}
+                        </div>
+                    </div>
                 </div>
             </div>
             <li>
