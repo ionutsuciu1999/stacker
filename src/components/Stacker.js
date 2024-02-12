@@ -26,7 +26,7 @@ const Stacker = (props) => {
         for(let i = props.gridHeight-1; i>=0; i--){
             for(let j = 0; j<props.gridWidth; j++){
                 ligthsRow.push(0);
-                divs.push(<div className='stackerGridTile' data-width={j} data-height={i}></div>);
+                divs.push(<div className='stackerGridTile ' data-width={j} data-height={i}></div>);
             }
             lightsGrid.push(ligthsRow);
             ligthsRow = [];
@@ -212,18 +212,17 @@ const Stacker = (props) => {
      
     return (
     <>
-    
-        <li>
-            <button onClick={()=>{navigate('/')}}>Back home</button>
-        </li>
-        <div id="stackerContainer">
-            <div id="stackerTitle">stackerTitle</div>
-            <div id="stackerBodyContainer">
-                <div id="stackerBodyVideo"><img src="../noise.gif"/></div>
-                <div id="stackerGridBody" style={{gridTemplateColumns: "repeat("+`${props.gridWidth}`+", 1fr)"}}>
+        <div id="stackerContainer" className="flex justify-center flex-col items-center ">
+            <div id="stackerTitle">STACKER</div>
+            <div id="stackerBodyContainer" className='relative'>
+                <div id="stackerBodyVideo" className='w-full h-full	absolute'><img src="../noise.gif"/></div>
+                <div id="stackerGridBody" className='grid relativ' style={{gridTemplateColumns: "repeat("+`${props.gridWidth}`+", 1fr)"}}>
                 {gridRender()}
                 </div>
             </div>
+            <li>
+            <button onClick={()=>{navigate('/')}}>Back home</button>
+        </li>
         </div>
     </>
     );

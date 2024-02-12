@@ -14,6 +14,10 @@ function App() {
   let [gridTiles,setGridTiles] = useState(6);
 
   return (
+    <>
+    <div id="screenEffect"></div>
+    <div id="screenLayer">
+    
     <Router>
         <Routes>
           <Route path='/' element={<Menu/>}/>
@@ -21,6 +25,8 @@ function App() {
           <Route path='/play' element={<Stacker gridWidth={gridWidth} gridHeight={gridHeight} timer={timer} gridTiles={gridTiles} setGridTiles={setGridTiles}/> } />
         </Routes>
     </Router>
+    </div>
+    </>
   );
 }
 
