@@ -15,6 +15,7 @@ const Stacker = (props) => {
     let currentRow = 0;
     let lightsGrid = [];
     let gridTiles = props.gridTiles;
+    let [time,setTime] = useState(0);
 
     //todo use lights not lightsGrid
 
@@ -36,6 +37,7 @@ const Stacker = (props) => {
 
 
     const resetGame =() =>{
+        setTime(0);
         clearTimeout(props.timer);
         gameRunning = -1;
         console.log("reset");
@@ -102,6 +104,7 @@ const Stacker = (props) => {
             //start game not running and press spacebar on first render to start
             if(gameRunning==0){
                 gameRunning = 1;
+                timer();
                 renderGame();
                 //normal gameRow increase
             }else if(gameRunning==1){
@@ -209,6 +212,16 @@ const Stacker = (props) => {
         }, props.timer);
     }
 
+      //game timer
+      const timer = () => {
+        let t = setTimeout(() => {
+            if(gameRunning==1 && location.pathname=="/play"){
+                setTime((time)=>time+100);
+                timer();
+                console.log("timerrr= "+time);
+            }
+        }, 100);
+    }
      
     return (
     <>
@@ -224,9 +237,10 @@ const Stacker = (props) => {
                     </div>
                 </div>
             </div>
-            <li>
+            
+            <span id="timer">{time}</span>
             <button onClick={()=>{navigate('/')}}>Back home</button>
-        </li>
+        
         </div>
     </>
     );

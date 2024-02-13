@@ -669,14 +669,33 @@ body {
   align-items: center;
 }
 
-#stackerTitle {
+#stackerTitle,  #timer{
   line-height: normal;
   color: #ffd52a;
   font-size: 5rem;
   text-shadow: -2px 0 0 #ff0404, -4px 0 0 #df4a42, 2px 0 0 #91fcfe, 4px 0 0 #4405fc;
-  animation: blink 1s steps(4, start) infinite;
+  animation: blink 10s steps(4, start) infinite;
 }
 
+.menuContainer{
+  display:flex;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height:100%
+}
+
+.menuContainer a{
+  color:white;
+  line-height: normal;
+  font-size: 5rem;
+  text-shadow: -2px 0 0 #ff0404, -4px 0 0 #df4a42, 2px 0 0 #91fcfe, 4px 0 0 #4405fc;
+}
+.menuContainer a:hover{
+  color: #ffd52a;
+  cursor: pointer;
+}
 @keyframes blink{
   from{
 

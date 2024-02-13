@@ -5,16 +5,14 @@ const Menu = (props) => {
 
 
   return (
-    <nav>
-      <ul>
-        <li>
-          <Link to='/settings'>SETTINGS</Link>
-        </li>
-        <li>
-          <Link to='/play'>PLAY</Link>
-        </li>
-      </ul>
-    </nav>
+    <div className="menuContainer">
+      <div>
+        <Link to='/settings'>SETTINGS</Link>
+      </div>
+      <div>
+        <Link to='/play'>PLAY</Link>
+      </div>
+    </div>
   );
 };
 
