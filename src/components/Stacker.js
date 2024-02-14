@@ -1,5 +1,5 @@
 import React from 'react';
-import {useState} from 'react'
+import {useState, useRef} from 'react'
 import {createContext} from 'react'
 import { Link, useLocation, useNavigate} from 'react-router-dom';
 import {useEffect} from 'react';
@@ -199,6 +199,12 @@ const Stacker = (props) => {
             direction = "left";
         }
     }
+    const timeRef = useRef('');
+
+    useEffect(() => {
+        // THIS IS THE MAGIC PART
+        timeRef.current = time;
+      }, [time]);
 
     //game loop
     const renderGame = () => {
@@ -216,7 +222,7 @@ const Stacker = (props) => {
       const timer = () => {
         let t = setTimeout(() => {
             if(gameRunning==1 && location.pathname=="/play"){
-                setTime((time)=>time+100);
+                setTime((time)=>time+1000);
                 timer();
                 console.log("timerrr= "+time);
             }
@@ -236,10 +242,12 @@ const Stacker = (props) => {
                         </div>
                     </div>
                 </div>
+                <div id="timerContainer">
+                    <div id="timer">{timeRef.current}</div>
+                    <span id="backHome" onClick={()=>{navigate('/')}}>Menu</span>
+                </div>
             </div>
             
-            <span id="timer">{time}</span>
-            <button onClick={()=>{navigate('/')}}>Back home</button>
         
         </div>
     </>
