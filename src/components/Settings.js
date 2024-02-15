@@ -1,35 +1,40 @@
 import React from "react";
 import { Link, useNavigate} from 'react-router-dom';
-import {useState} from 'react'
+import {useState, useRef} from 'react'
 import {useEffect} from 'react';
 
 
 let Settings = (props) =>{
     const navigate = useNavigate()
+    const count = useRef(0);
 
-     let [difficulty,setDifficulty] = useState('medium');
+    let [difficulty,setDifficulty] = useState('medium');
 
-    //todo  getting triggered on load
+
     useEffect(() => {
+      count.current = count.current+1;
+      console.log(count);
+      //skip initial render useEffect
+      if (count.current>1) {
         console.log("switch dif");
-        console.log(difficulty);
         switch (difficulty) {
             case 'easy':
-                props.setGridWidth(10); props.setGridHeight(15); props.setGridTiles(6); navigate('/play')
+                props.setGridWidth(10); props.setGridHeight(15); props.setGridTiles(6);
               break;
             case 'medium':
-                props.setGridWidth(17); props.setGridHeight(22); props.setGridTiles(6); navigate('/play')
+                props.setGridWidth(17); props.setGridHeight(22); props.setGridTiles(6);
                 break;
             case 'hard':
-                props.setGridWidth(21); props.setGridHeight(28); props.setGridTiles(5);navigate('/play')
+                props.setGridWidth(21); props.setGridHeight(28); props.setGridTiles(5);
               break;
             case 'impossible':
-                props.setGridWidth(17); props.setGridHeight(20); props.setGridTiles(1);navigate('/play')
+                props.setGridWidth(17); props.setGridHeight(20); props.setGridTiles(1);
               break;
             default:
                 
           }
-         
+          navigate('/play');
+        }
       }, [difficulty]);
 
     return (

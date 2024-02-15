@@ -37,7 +37,6 @@ const Stacker = (props) => {
 
 
     const resetGame =() =>{
-        setTime(0);
         clearTimeout(props.timer);
         gameRunning = -1;
         console.log("reset");
@@ -112,6 +111,9 @@ const Stacker = (props) => {
                 gameNextRow();
             //game lost reset
             }else if(gameRunning==-1){
+                
+                setTime(0);
+                timer();
                 console.log("resetttttt");
                 initiateValues();
                 gameRunning = 1;
@@ -199,13 +201,7 @@ const Stacker = (props) => {
             direction = "left";
         }
     }
-    const timeRef = useRef('');
-
-    useEffect(() => {
-        // THIS IS THE MAGIC PART
-        timeRef.current = time;
-      }, [time]);
-
+  
     //game loop
     const renderGame = () => {
         let t = setTimeout(() => {
@@ -220,11 +216,10 @@ const Stacker = (props) => {
 
       //game timer
       const timer = () => {
-        let t = setTimeout(() => {
+        let b = setTimeout(() => {
             if(gameRunning==1 && location.pathname=="/play"){
-                setTime((time)=>time+1000);
+                setTime((time)=>Number((time+100)));
                 timer();
-                console.log("timerrr= "+time);
             }
         }, 100);
     }
@@ -243,7 +238,7 @@ const Stacker = (props) => {
                     </div>
                 </div>
                 <div id="timerContainer">
-                    <div id="timer">{timeRef.current}</div>
+                    <div id="timer">{Number(time/1000).toFixed(1)}</div>
                     <span id="backHome" onClick={()=>{navigate('/')}}>Menu</span>
                 </div>
             </div>
