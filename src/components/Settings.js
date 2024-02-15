@@ -22,16 +22,16 @@ let Settings = (props) =>{
                 props.setGridWidth(13); props.setGridHeight(15); props.setGridTiles(6); props.setTimer(80);
               break;
             case 'medium':
-                props.setGridWidth(17); props.setGridHeight(21); props.setGridTiles(6); props.setTimer(50);
+                props.setGridWidth(17); props.setGridHeight(21); props.setGridTiles(6); props.setTimer(70);
                 break;
             case 'hard':
-                props.setGridWidth(21); props.setGridHeight(26); props.setGridTiles(5); props.setTimer(40);
+                props.setGridWidth(21); props.setGridHeight(26); props.setGridTiles(5); props.setTimer(60);
               break;
             case 'impossible':
-                props.setGridWidth(17); props.setGridHeight(20); props.setGridTiles(1); props.setTimer(40);
+                props.setGridWidth(17); props.setGridHeight(20); props.setGridTiles(1); props.setTimer(50);
               break;
             default:
-              props.setGridWidth(17); props.setGridHeight(21); props.setGridTiles(6); props.setTimer(50);
+              props.setGridWidth(17); props.setGridHeight(21); props.setGridTiles(6); props.setTimer(70);
           }
           navigate('/play');
         }
