@@ -8,7 +8,7 @@ let Settings = (props) =>{
     const navigate = useNavigate()
     const count = useRef(0);
 
-    let [difficulty,setDifficulty] = useState('medium');
+    let [difficulty,setDifficulty] = useState('');
 
 
     useEffect(() => {
@@ -19,19 +19,19 @@ let Settings = (props) =>{
         console.log("switch dif");
         switch (difficulty) {
             case 'easy':
-                props.setGridWidth(10); props.setGridHeight(15); props.setGridTiles(6);
+                props.setGridWidth(13); props.setGridHeight(15); props.setGridTiles(6); props.setTimer(80);
               break;
             case 'medium':
-                props.setGridWidth(17); props.setGridHeight(22); props.setGridTiles(6);
+                props.setGridWidth(17); props.setGridHeight(21); props.setGridTiles(6); props.setTimer(50);
                 break;
             case 'hard':
-                props.setGridWidth(21); props.setGridHeight(28); props.setGridTiles(5);
+                props.setGridWidth(21); props.setGridHeight(26); props.setGridTiles(5); props.setTimer(40);
               break;
             case 'impossible':
-                props.setGridWidth(17); props.setGridHeight(20); props.setGridTiles(1);
+                props.setGridWidth(17); props.setGridHeight(20); props.setGridTiles(1); props.setTimer(40);
               break;
             default:
-                
+              props.setGridWidth(17); props.setGridHeight(21); props.setGridTiles(6); props.setTimer(50);
           }
           navigate('/play');
         }

@@ -12,6 +12,7 @@ function App() {
   let [gridHeight, setGridHeight] = useState(22);
   let [timer,setTimer] = useState(30);
   let [gridTiles,setGridTiles] = useState(6);
+  
 
   return (
     <>

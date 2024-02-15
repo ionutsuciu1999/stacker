@@ -98,7 +98,8 @@ const Stacker = (props) => {
     }
     
     const spacebarHandler = (e) =>{
-        if(e.key == " "){
+        console.log(e);
+        if(e.key == " " || e.type == 'touchstart'){
             console.log("CLICKCKCKCKC");
             //start game not running and press spacebar on first render to start
             if(gameRunning==0){
@@ -126,7 +127,7 @@ const Stacker = (props) => {
     useEffect(() => {
         console.log('start lights');
         document.addEventListener('keydown', spacebarHandler,true);
-
+        document.addEventListener('touchstart', spacebarHandler,true);
         //starts the first x tiles
         
         initiateValues();
@@ -136,6 +137,7 @@ const Stacker = (props) => {
             console.log('cleanup');
             resetGame();
             document.removeEventListener('keydown',spacebarHandler,true);
+            document.removeEventListener('touchstart',spacebarHandler,true);
         };
     }, []);
 
