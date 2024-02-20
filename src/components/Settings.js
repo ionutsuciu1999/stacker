@@ -14,7 +14,7 @@ let Settings = (props) =>{
     useEffect(() => {
       count.current = count.current+1;
       console.log(count);
-      //skip initial render useEffect
+      //skip initial render useEffect, otherwise i will be rerouted on loading without the chance to see the screen.
       if (count.current>1) {
         console.log("switch dif");
         switch (difficulty) {

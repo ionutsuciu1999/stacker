@@ -6,8 +6,8 @@ import {useEffect} from 'react';
 import '../index.css';
 
 
+
 const Stacker = (props) => {
-    console.log("STARTTTTT");
     const navigate = useNavigate()
     const location = useLocation();
     let [lights,setLight] = useState();
@@ -17,9 +17,10 @@ const Stacker = (props) => {
     let gridTiles = props.gridTiles;
     let [time,setTime] = useState(0);
 
+
     //todo use lights not lightsGrid
 
-    //render initial grid and fill initial state array
+    //render initial grid and fill initial state array with 0 and 1
     const gridRender = () => {
     let divs = [];
     let ligthsRow = [];
@@ -35,30 +36,28 @@ const Stacker = (props) => {
         return divs;
     };
 
-
+    //stops the game
     const resetGame =() =>{
         clearTimeout(props.timer);
         gameRunning = -1;
         console.log("reset");
-        //reset variables and restart
-        
     }
 
-    //todo problem because you could press psacebar while onlt 4/5 squares are rendered
+
     const gameNextRow = () => {
         console.log("next row");
 
-        //cancello le tiles che sforano
-        //se sono alla prima riga non ha senso controllare
+        //remove the extra lights if i didn't land correctly
+        //if i'm at the first row there is no point in checking
         if(currentRow>0){
             for(let i = 0; i < props.gridWidth; i++){
                 if(lightsGrid[currentRow][i]==1 && lightsGrid[currentRow-1][i]==0){
-                    //diminuisco il nr di luci alla prossima riga, e cancello quello che sforano
+                    //decrease the lights on the next row if i didnt land correctly
                     lightsGrid[currentRow][i] = 0;
                     gridTiles--;
-                    //se sono a 0 tiles, ho perso
+                    //if i dont have any tiles left, i lost
                     if(gridTiles<=0){
-                    console.log("LOST");
+                    //LOST
                     resetGame();
                     }
                 }
@@ -67,9 +66,9 @@ const Stacker = (props) => {
         
         currentRow++;
         
-        //starts the first x tiles if didnt win yet
+        //check if win, otherwise starts the first x tiles on the new row
         if(currentRow == props.gridHeight){
-            console.log("WIN");
+            //WIN
             resetGame();
         }else{
             for(let i = 0; i < gridTiles; i++){
@@ -97,10 +96,9 @@ const Stacker = (props) => {
         arrayToLights();
     }
     
+    //handler of spacebar / touch event
     const spacebarHandler = (e) =>{
-        console.log(e);
         if(e.key == " " || e.type == 'touchstart'){
-            console.log("CLICKCKCKCKC");
             //start game not running and press spacebar on first render to start
             if(gameRunning==0){
                 gameRunning = 1;
@@ -112,7 +110,6 @@ const Stacker = (props) => {
                 gameNextRow();
             //game lost reset
             }else if(gameRunning==-1){
-                
                 setTime(0);
                 timer();
                 console.log("resetttttt");
@@ -123,16 +120,40 @@ const Stacker = (props) => {
         }
     }
 
-    //when grid is finished loading start logic
+
+    function checkImagesLoaded() {
+        console.log("chec");
+        // Get all the images on the page
+        var images = document.querySelectorAll('img');
+        var imagesLoaded = 0;
+        console.log(images.length);
+        for (var i = 0; i < images.length; i++) {
+          var img = new window.Image();
+          img.src = images[i].src;
+          img.onload = function() {
+            console.log("loadeddddddddddd");
+            imagesLoaded++;
+            if (imagesLoaded == images.length) {
+                // If all the images have finished loading
+                console.log('All images have finished loading');
+                props.setIsLoading(0);
+            }
+          }
+        }
+    }
+    
+    //when grid is finished loading start game logic
     useEffect(() => {
+        props.setIsLoading(1);
+        checkImagesLoaded();
         console.log('start lights');
         document.addEventListener('keydown', spacebarHandler,true);
         document.addEventListener('touchstart', spacebarHandler,true);
+
         //starts the first x tiles
-        
         initiateValues();
-        
-        //runs when component stacker gets unrendered
+
+        //runs when component stacker gets unrendered (go back to menu / change screen)
         return () => {
             console.log('cleanup');
             resetGame();
@@ -163,13 +184,12 @@ const Stacker = (props) => {
     let direction = "left";
     const moveLights = () => {
         if(direction=="left"){
-            //console.log("LEFT");
             for(let i = 0; i < props.gridWidth; i++){
-                //scorro finche non trovo il primo rosso e coloro quella precedente di rosso
+                //scroll until you find the first red, and color the previous one red.
                 if(lightsGrid[currentRow][i+1]==1 && lightsGrid[currentRow][i]==0){
                     lightsGrid[currentRow][i] = 1;
                 }
-                //scorro finche non trovo il primo bianco e coloro quella precedente di rosso
+                //scroll until you find the first white, and color the previous one red.
                 if((lightsGrid[currentRow][i+1]==0 || i==props.gridWidth-1) && lightsGrid[currentRow][i]==1){
                     lightsGrid[currentRow][i] = 0;
                 }
@@ -179,13 +199,12 @@ const Stacker = (props) => {
         
 
         if(direction=="right"){
-            //console.log("RIGHT");
             for(let i = props.gridWidth-1; i >= 0; i--){
-                //scorro finche non trovo il primo rosso e coloro quella precedente di rosso
+                //scroll until you find the first red, and color the previous one red.
                 if(lightsGrid[currentRow][i-1]==1 && lightsGrid[currentRow][i]==0){
                     lightsGrid[currentRow][i] = 1;
                 }
-                //scorro finche non trovo il primo bianco e coloro quella precedente di rosso
+                //scroll until you find the first white, and color the previous one red.
                 if((lightsGrid[currentRow][i-1]==0 || i==0) && lightsGrid[currentRow][i]==1){
                     lightsGrid[currentRow][i] = 0;
                 }
@@ -195,6 +214,7 @@ const Stacker = (props) => {
 
         arrayToLights();
         
+        //if i reach the end of the field, change direction
         if(lightsGrid[currentRow][0]==1){
             direction = "right";
         }
@@ -204,19 +224,19 @@ const Stacker = (props) => {
         }
     }
   
-    //game loop
+    //game render loop
     const renderGame = () => {
         let t = setTimeout(() => {
             if(gameRunning==1 && location.pathname=="/play"){
                 moveLights();
                 arrayToLights();
                 renderGame();
-                console.log("render");
+                //console.log("render");
             }
         }, props.timer);
     }
 
-      //game timer
+      //game score timer
       const timer = () => {
         let b = setTimeout(() => {
             if(gameRunning==1 && location.pathname=="/play"){
@@ -225,7 +245,9 @@ const Stacker = (props) => {
             }
         }, 100);
     }
-     
+    
+
+
     return (
     <>
         <div id="stackerContainer" className="flex justify-center flex-col items-center ">
@@ -244,8 +266,6 @@ const Stacker = (props) => {
                     <span id="backHome" onClick={()=>{navigate('/')}}>Menu</span>
                 </div>
             </div>
-            
-        
         </div>
     </>
     );
